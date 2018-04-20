@@ -1,0 +1,73 @@
+sudo: false
+language: node_js
+node_js:
+  - "6"
+  - "7"
+  - "8"
+services:
+  - docker
+  - node
+
+branches:
+  except:
+    - /^pr\..*/
+    - /^features\..*/
+  only:
+    - master
+    - develop
+    - /^v[0-9]+\.){0,2}(\*|[0-9]+
+    - docker
+
+before_install:
+  - git config user.name "$GH_USER"
+  - git config user.email "$GH_USER_EMAIL"
+  # setup https authentication credentials, used by ./mvnw release:prepare
+  - git config credential.helper "store --file=.git/credentials"
+  - echo "https://$GH_TOKEN:@github.com" > .git/credentials
+
+install:
+  # Override default travis to use the maven wrapper
+  #- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+  - echo "Installing djantajs bundle ..."
+
+script:
+  - echo "Scripting djantajs bundle ..."
+
+after_script:
+  #- docker images
+  - echo "Runing after script djantajs bundle ..."
+
+after_success:
+  # Only continue for 'develop' or 'release/*' branches
+  - if [ "$TRAVIS_BRANCH" =~ "^(develop$|feature//*)" ]; then
+      echo "Trigged branch= $TRAVIS_BRANCH"
+    else
+      npm run build
+    fi
+
+deploy:
+  provider: npm
+  email: npmjs@djanta.io
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: djantaio/djantajs
+    all_branches: false
+    node: 6
+
+notifications:
+  email: false
+  slack:
+    rooms:
+      - djantaio:1GeeSv1noSekK9to1yTqsbDw#travis-ci
+      - djantaio:1GeeSv1noSekK9to1yTqsbDw#djantajs
+    on_success: always
+    template:
+      - Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch}
+        by %{author} %{result} in %{duration}
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/527ecb157afe8c3f6eb9
+    on_success: change
+    on_failure: always
+    on_start: never

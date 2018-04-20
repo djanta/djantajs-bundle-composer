@@ -15,9 +15,6 @@
   "varstmt": true,
   "globals": {
     "djantajs": true,
-    "log": true,
-    "LOG": true,
-    "LOGGER": true,
     "logger": true
   },
   "mocha": true,
