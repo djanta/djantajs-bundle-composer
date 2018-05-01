@@ -1,5 +1,5 @@
 {
-  "name": "djantajs-runtime-sauce",
+  "name": "djantajs-compose",
   "description": "djantajs package builder core bundle",
   "version": "0.0.0",
   "engines": {
@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/djanta/djantajs-runtime-sauce.git"
+    "url": "git+ssh://git@github.com/djanta/djantajs-compose.git"
   },
   "keywords": [
-    "sauce",
+    "compose",
     "djantajs",
     "djanta",
     "bundle",
@@ -22,30 +22,29 @@
   "author": "djantajs.team@djanta.io",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/djanta/djantajs-runtime-sauce/issues"
+    "url": "https://github.com/djanta/djantajs-compose/issues"
   },
-  "homepage": "https://github.com/djanta/djantajs-runtime-sauce#readme",
+  "homepage": "https://github.com/djanta/djantajs-compose#readme",
   "scripts": {
     "precompile": "npm run clean",
     "clean": "rimraf .djanta-rc.json",
-    "compile": "grunt compile",
+    "compile": "echo .",
     "build": "npm run precompile && npm run compile",
-    "test": "grunt compile && npm run coverage",
-    "coverage": "./node_modules/.bin/_mocha ./test/**/*.spec.js --reporter mochawesome --reporter-options reportDir=./test/report,reportFilename=result --recursive --timeout 18000 --expose-gc --colors"
+    "test": "npm run coverage",
+    "coverage": "./node_modules/.bin/_mocha ./test/**/**/*.spec.js --reporter mochawesome --reporter-options reportDir=./test/report,reportFilename=result --recursive --timeout 18000 --expose-gc --colors"
   },
+  "bin": {
+    "djantajs-compose": "./bin/cli.js"
+  },
+  "main": "index.js",
   "dependencies": {
     "string": "^3.3.3",
     "dynavers": "^0.2.0",
-    "semver": "^5.5.0"
+    "semver": "^5.5.0",
+    "mkdirp": "^0.5.1",
+    "lodash": "^4.17.10"
   },
   "devDependencies": {
-    "djantajs-runtime": "git+ssh://git@github.com/djanta/djantajs-runtime.git#v0.1.0",
-    "grunt": "^1.0.1",
-    "grunt-available-tasks": "^0.6.3",
-    "grunt-concurrent": "^2.3.1",
-    "grunt-djantajs-compiler": "git+ssh://git@github.com/djanta/grunt-djantajs-compiler.git#develop",
-    "load-grunt-tasks": "^3.5.2",
-    "lodash": "^4.17.4",
     "mocha": "^4.0.1",
     "mochawesome": "^3.0.1",
     "rimraf": "^2.6.2"

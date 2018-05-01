@@ -1,0 +1,25 @@
+{
+  "name": "my-npm-package-name",
+  "repository": "https://github.com/me/my-npm-package-name",
+  "constraints": {
+    "os": ["*"]
+  },
+  "configuration": {
+    "default-property": "My default propery value"
+  },
+  "version": {
+    "0.9.0": {
+      "runtime": [">=0.1.0"],
+      "imports": [],
+      "configuration": {
+        "property": "value"
+      },
+      "env": ["production"]
+    }
+  },
+  "marketplace": {
+    "oid": "the platform provided configuration version id",
+    "status": "",
+    "sponsored": false
+  }
+}
