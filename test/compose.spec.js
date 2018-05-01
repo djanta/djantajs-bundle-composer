@@ -6,6 +6,7 @@ let compose = require('../index');
 let assembly = require('./assembly/compose.json');
 let Project = require('../lib/project');
 let {expect, assert} = require('chai');
+let _ = require('lodash');
 
 describe('testing djantajs packaging compose', () => {
   let pltf, manager;
@@ -22,7 +23,8 @@ describe('testing djantajs packaging compose', () => {
     pltf = new Platform (config);
     manager = compose.factory.createManager(pltf);
 
-    pltf.addProject(new Project(manager, assembly));
+    (_.isArrayLikeObject(assembly) ? assembly : [assembly])
+      .forEach(project => pltf.addProject(new Project(manager, assembly)));
   });
 
   it('should the packaging deployed', done => {

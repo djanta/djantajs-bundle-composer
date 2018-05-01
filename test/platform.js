@@ -43,6 +43,16 @@ module.exports = class BundleTestingPlatform {
   }
 
   /**
+   * Gets the platform version.
+   * @returns {{runtime:string, server:string, node:string, npm:string}} the platform version
+   */
+  get version () {
+    return _.defaults({}, {
+      runtime: this.definition.runtime
+    });
+  }
+
+  /**
    * Get the platform registered project
    * @param {string|Function} filter the project filter
    * @return {[CoreRuntimeProject]|CoreRuntimeProject} an array of {CoreRuntimeProject} or single instance
