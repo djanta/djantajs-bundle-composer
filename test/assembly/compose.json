@@ -7,8 +7,9 @@
   "configuration": {
     "default-property": "My default propery value"
   },
+  "env": ["testing"],
   "version": {
-    "0.9.0": {
+    "0.2.0": {
       "runtime": ["0.1.0"],
       "configuration": {
         "property": "value"

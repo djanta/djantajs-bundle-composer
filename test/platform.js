@@ -6,6 +6,12 @@ let mkdirp = require('mkdirp');
 let path = require('path');
 let _ = require('lodash');
 
+/*if (/^win/i.test(process.platform)) {
+  // TODO: Windows
+} else {
+  // TODO: Linux, Mac or something else
+}*/
+
 module.exports = class BundleTestingPlatform {
 
   /**
@@ -39,7 +45,7 @@ module.exports = class BundleTestingPlatform {
    */
   get mode () {
     let env = process.env['NODE_ENV'];
-    return this.definition.mode || env;
+    return this.definition.mode  || (env || 'testing');
   }
 
   /**
@@ -53,6 +59,14 @@ module.exports = class BundleTestingPlatform {
   }
 
   /**
+   * Gets the platform constraints validator regex.
+   * @returns {{Regex}}
+   */
+  get platform () {
+    return _.map(((this.definition || {}).constraints || {}).os || [], r => _.isString(r) ? new RegExp(r) : r);
+  }
+
+  /**
    * Get the platform registered project
    * @param {string|Function} filter the project filter
    * @return {[CoreRuntimeProject]|CoreRuntimeProject} an array of {CoreRuntimeProject} or single instance
@@ -62,7 +76,7 @@ module.exports = class BundleTestingPlatform {
     let self = this, filter_ = _.isNil(filter) ? project => true : _.isFunction(filter) ? filter
       : _.isString(filter) ? project => project.name === filter : project => false;
 
-    return _.filter(self._projects, filter_);
+    return _.find(self._projects, filter_);
   }
 
   /**
