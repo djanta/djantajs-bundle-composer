@@ -73,10 +73,10 @@ module.exports = class BundleTestingPlatform {
    *  of {CoreRuntimeProject}
    */
   getProject (filter) {
-    let self = this, filter_ = _.isNil(filter) ? project => true : _.isFunction(filter) ? filter
-      : _.isString(filter) ? project => project.name === filter : project => false;
+    let self = this, $$0 = _.isNil(filter) ? () => true : _.isFunction(filter) ? filter
+      : _.isString(filter) ? p => p.name === filter : () => false;
 
-    return _.find(self._projects, filter_);
+    return _.find(self._projects, $$0);
   }
 
   /**
@@ -90,5 +90,24 @@ module.exports = class BundleTestingPlatform {
       self._projects = self._projects.concat(project);
     }
     else { self._projects.push(project); }
+  }
+
+  /**
+   * Install the current project npm dependencies.
+   * @param {string} version the target version to install
+   * @param {{}} options the given install extra configurable options
+   */
+  install (version = void undefined, options = {}) {
+    let self = this, {execSync} = require('child_process');
+
+    /*try {
+     if (plugins && plugins.length > 0) {
+     let result = execSync('npm i ' + plugins.join(' '), { cwd: ROOT });
+     ///!* eslint-disable no-console *!/ console.log (result); /!* eslint-enable no-console *!/
+     }
+     }
+     catch (err) {
+     ///!* eslint-disable no-console *!/ console.error(err); /!* eslint-enable no-console *!/
+     }*/
   }
 };

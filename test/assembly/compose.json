@@ -4,13 +4,16 @@
   "constraints": {
     "os": ["*"]
   },
-  "configuration": {
-    "default-property": "My default propery value"
+  "defaults": {
+    "imports": [],
+    "configuration": {
+      "default-property": "My default propery value"
+    },
+    "env": ["testing"]
   },
-  "env": ["testing"],
   "version": {
     "0.2.0": {
-      "runtime": ["0.1.0"],
+      "runtime": ["<=0.1.0"],
       "default": true,
       "configuration": {
         "property": "value"

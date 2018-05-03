@@ -39,7 +39,6 @@ describe('testing djantajs packaging compose', () => {
   });
 
   describe('testing compose bundle manager', () => {
-
     it('should bundle manager be valid have bundle registered', done => {
       should.exist(manager);
       done();
@@ -108,12 +107,13 @@ describe('testing djantajs packaging compose', () => {
         should.exist(project);
         expect(project.isLocal()).to.equal(false);
         assert.equal(project.isLocal(), false, 'Unexpecting the current project to be a local instance');
+
         done();
       });
 
       it('should not be eligible', done => {
         let bundle = pltf.getProject('my-npm-package-name')
-          .bundle('1.0.0');
+          .bundle('0.2.0');
 
         should.exist(bundle);
         expect(bundle.isEligible()).to.equal(false);
