@@ -69,6 +69,38 @@ describe('testing djantajs packaging compose', () => {
       done();
     });
 
+
+    it('should have {0.2.0} bundle set as default', done => {
+      let project = pltf.getProject('my-npm-package-name');
+
+      should.exist(project);
+      expect(project.isLocal()).to.equal(false);
+      assert.equal(project.isLocal(), false, 'Unexpecting the current project to be a local instance');
+
+      let bundle = project.default;
+
+      should.exist(bundle);
+      assert.equal(bundle.version, '0.2.0', 'The version should match with \'0.2.0\'');
+
+      done();
+    });
+
+    it('should latest tag bundle', done => {
+      let project = pltf.getProject('my-npm-package-name');
+
+      should.exist(project);
+      expect(project.isLocal()).to.equal(false);
+      assert.equal(project.isLocal(), false, 'Unexpecting the current project to be a local instance');
+
+      let bundle = project.latest;
+
+      should.exist(bundle);
+      assert.equal(bundle.version, '1.0.0', 'The version should match with \'1.0.0\'');
+
+      done();
+    });
+
+
     describe('testing bundle {0.2.0} deployment', () => {
 
       it('should {my-npm-package-name} project not be local', done => {
@@ -78,9 +110,19 @@ describe('testing djantajs packaging compose', () => {
         assert.equal(project.isLocal(), false, 'Unexpecting the current project to be a local instance');
         done();
       });
+
+      it('should not be eligible', done => {
+        let bundle = pltf.getProject('my-npm-package-name')
+          .bundle('1.0.0');
+
+        should.exist(bundle);
+        expect(bundle.isEligible()).to.equal(false);
+        done();
+      });
+
     });
 
-    describe('testing bundle {1.0.0} deployment', () => {
+    describe('testing bundle {1.0.0} component', () => {
 
       it('should bundle {1.0.0} exists', done => {
         let bundle = pltf.getProject('my-npm-package-name')
@@ -88,10 +130,26 @@ describe('testing djantajs packaging compose', () => {
 
         should.exist(bundle);
         assert.equal(bundle.version, '1.0.0', 'The version should match with \'1.0.0\'');
-        expect(bundle.isEligible()).to.equal(true);
-
         done();
       });
+
+      it('should bundle {1.0.0} be eligible', done => {
+        let bundle = pltf.getProject('my-npm-package-name')
+          .bundle('1.0.0');
+
+        should.exist(bundle);
+        expect(bundle.isEligible()).to.equal(true);
+        done();
+      });
+
+      it('should bundle {1.0.0} have a valid configuration', done => {
+        let bundle = pltf.getProject('my-npm-package-name')
+          .bundle('1.0.0');
+
+        should.exist(bundle);
+        done();
+      });
+
     });
   });
 });
