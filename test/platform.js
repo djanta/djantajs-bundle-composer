@@ -67,6 +67,12 @@ module.exports = class BundleTestingPlatform {
   }
 
   /**
+   * Gets the deployed project size
+   * @returns {number} a valid deployed project size
+   */
+  get size () { return !_.isNil(this._projects) ? this._projects.length : 0; }
+
+  /**
    * Get the platform registered project
    * @param {string|Function} filter the project filter
    * @return {[CoreRuntimeProject]|CoreRuntimeProject} an array of {CoreRuntimeProject} or single instance
@@ -101,13 +107,13 @@ module.exports = class BundleTestingPlatform {
     let self = this, {execSync} = require('child_process');
 
     /*try {
-     if (plugins && plugins.length > 0) {
-     let result = execSync('npm i ' + plugins.join(' '), { cwd: ROOT });
-     ///!* eslint-disable no-console *!/ console.log (result); /!* eslint-enable no-console *!/
-     }
-     }
-     catch (err) {
-     ///!* eslint-disable no-console *!/ console.error(err); /!* eslint-enable no-console *!/
-     }*/
+      if (plugins && plugins.length > 0) {
+        let result = execSync('npm i ' + plugins.join(' '), {cwd: ROOT});
+        /!* eslint-disable no-console *!/ console.log (result); /!* eslint-enable no-console *!/
+      }
+    }
+    catch (err) {
+      /!* eslint-disable no-console *!/ console.error(err); /!* eslint-enable no-console *!/
+    }*/
   }
 };

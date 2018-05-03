@@ -1,25 +1,13 @@
 {
-  "name": "my-npm-package-name",
-  "repository": "https://github.com/djanta/my-npm-package-name",
+  "name": "my-testing-nosql",
+  "repository": "https://github.com/djanta/my-testing-nosql",
   "constraints": {
     "os": ["*"]
   },
-  "configuration": {
-    "default-property": "My default propery value"
-  },
-  "env": ["testing"],
   "version": {
-    "0.2.0": {
-      "runtime": ["0.1.0"],
+    "2.0.0": {
+      "runtime": [">=0.1.0"],
       "default": true,
-      "configuration": {
-        "property": "value"
-      },
-      "env": ["production"]
-    },
-    "1.0.0": {
-      "runtime": [">=0.5.0"],
-      "imports": ["my-testing-nosql"],
       "configuration": {
         "provider": "nosql",
         "connection": {
@@ -28,12 +16,7 @@
           "dbname": "testing"
         }
       },
-      "env": ["production", "dev", "staging"]
+      "env": ["testing"]
     }
-  },
-  "marketplace": {
-    "oid": "the platform provided configuration version id",
-    "status": "",
-    "sponsored": false
   }
 }

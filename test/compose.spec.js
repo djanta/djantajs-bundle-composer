@@ -23,9 +23,10 @@ describe('testing djantajs packaging compose', () => {
   before(() => {
     pltf = new Platform (config);
     manager = compose.factory.createManager(pltf);
-
-    (_.isArrayLikeObject(assembly) ? assembly : [assembly])
-      .forEach(project => pltf.addProject(new Project(manager, assembly)));
+    _.flatten([
+      assembly, require('./assembly/nosql.json')
+    ])
+      .forEach(p => pltf.addProject(new Project(manager, p)));
   });
 
   it('should platform instance be a valid object', done => {
@@ -35,6 +36,16 @@ describe('testing djantajs packaging compose', () => {
 
   it('should platform manager instance be a valid object', done => {
     expect(manager).to.be.a('object');
+    done(); //properly terminate the test ...
+  });
+
+  it('should have 2 projects deployed', done => {
+    expect(pltf.size).to.equal(2);
+    done(); //properly terminate the test ...
+  });
+
+  it('should have 3 bundles deployed', done => {
+    expect(manager.size).to.equal(3);
     done(); //properly terminate the test ...
   });
 
