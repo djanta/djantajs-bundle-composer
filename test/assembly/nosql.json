@@ -1,0 +1,22 @@
+{
+  "name": "my-testing-nosql",
+  "repository": "https://github.com/djanta/my-testing-nosql",
+  "constraints": {
+    "os": ["*"]
+  },
+  "version": {
+    "2.0.0": {
+      "runtime": [">=0.1.0"],
+      "default": true,
+      "configuration": {
+        "provider": "nosql",
+        "connection": {
+          "host": "0.0.0.0",
+          "post": "9999",
+          "dbname": "testing"
+        }
+      },
+      "env": ["testing"]
+    }
+  }
+}

@@ -4,9 +4,9 @@ engines:
     enabled: true
     config:
       languages:
-      - javascript
+        - javascript
   eslint:
-    enabled: false
+    enabled: true
   fixme:
     enabled: true
 ratings:
