@@ -5,6 +5,7 @@ let os = require('os');
 let mkdirp = require('mkdirp');
 let path = require('path');
 let _ = require('lodash');
+let LibPlatform = require('../lib/platform');
 
 /*if (/^win/i.test(process.platform)) {
   // TODO: Windows
@@ -12,13 +13,13 @@ let _ = require('lodash');
   // TODO: Linux, Mac or something else
 }*/
 
-module.exports = class BundleTestingPlatform {
+module.exports = class BundleTestingPlatform extends LibPlatform {
 
   /**
    * Qualified default class constructor
    */
   constructor (defintion = {}) {
-    this._defintion = defintion;
+    super (defintion);
     this._cwd = path.join(os.tmpdir(), pkg.name, 'test');
 
     mkdirp(this._cwd, (err) => {
@@ -28,35 +29,10 @@ module.exports = class BundleTestingPlatform {
   }
 
   /**
-   * the platform definition
-   * @return {{}|*}
-   */
-  get definition () { return this._defintion; }
-
-  /**
    * Gets the project current working directory
    * @returns {string} a valid projec working directory
    */
   get cwd () { return this._cwd; }
-
-  /**
-   * Gets the platform running mode
-   * @returns {string} a valid define the running environment
-   */
-  get mode () {
-    let env = process.env['NODE_ENV'];
-    return this.definition.mode  || (env || 'testing');
-  }
-
-  /**
-   * Gets the platform version.
-   * @returns {{runtime:string, server:string, node:string, npm:string}} the platform version
-   */
-  get version () {
-    return _.defaults({}, {
-      runtime: this.definition.runtime
-    });
-  }
 
   /**
    * Gets the platform constraints validator regex.
@@ -99,21 +75,15 @@ module.exports = class BundleTestingPlatform {
   }
 
   /**
-   * Install the current project npm dependencies.
-   * @param {string} version the target version to install
-   * @param {{}} options the given install extra configurable options
+   * Resolve the platform bundles.
+   * @returns {[CoreComposeBundle]}
    */
-  install (version = void undefined, options = {}) {
-    let self = this, {execSync} = require('child_process');
-
-    /*try {
-      if (plugins && plugins.length > 0) {
-        let result = execSync('npm i ' + plugins.join(' '), {cwd: ROOT});
-        /!* eslint-disable no-console *!/ console.log (result); /!* eslint-enable no-console *!/
-      }
-    }
-    catch (err) {
-      /!* eslint-disable no-console *!/ console.error(err); /!* eslint-enable no-console *!/
-    }*/
+  resolve () {
+    return _.reduce(this._projects || [], (cumulator, project) => {
+      let latest = project.latest; //, resolved = latest.resolve(cumulator);
+      //cumulator.push (latest);
+      //if (_.isArrayLikeObject(resolved)) { cumulator = cumulator.concat(resolved); }
+      return !_.isNil(latest) ? latest.resolve(cumulator) : cumulator;
+    }, {});
   }
 };

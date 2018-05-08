@@ -3,6 +3,7 @@
 const Versioning = require('./lib/versioning');
 const Bundle = require('./lib/bundle');
 const CoreRuntimeManager = require('./lib/manager');
+const Platform = require('./lib/platform');
 
 const defaults = {
   factory: {
@@ -13,5 +14,6 @@ const defaults = {
 
 module.exports = {
   VersionManager: Versioning,
-  factory: defaults.factory
+  factory: defaults.factory,
+  Platform: Platform
 };
