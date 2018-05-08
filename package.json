@@ -1,7 +1,7 @@
 {
   "name": "djantajs-compose",
   "description": "djantajs package builder core bundle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "engines": {
     "node": ">=7.0.0",
     "npm": ">=4.6.0"
