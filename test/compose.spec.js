@@ -182,8 +182,6 @@ describe('testing djantajs packaging compose', () => {
         bundle.configuration.should.like(json);
         bundle.configuration.should.jsonEqual(json);
 
-        console.log('Bundle toJson:\n%s', JSON.stringify(bundle.toJson(), null, 2));
-
         done();
       });
     });

@@ -1,4 +1,22 @@
 
+* __Remove commit__
+
+    [stanislaska](mailto:koffi.ass@gmail.com) - Tue, 8 May 2018 17:43:05 -0500
+    
+    
+
+* __Incrementing to version 0.1.0__
+
+    [djantaio](mailto:github@djanta.io) - Tue, 8 May 2018 17:39:02 -0500
+    
+    
+
+* __0.1.0__
+
+    [djantaio](mailto:github@djanta.io) - Tue, 8 May 2018 17:38:50 -0500
+    
+    
+
 * __Fininalize the default implementation__
 
     [stanislaska](mailto:koffi.ass@gmail.com) - Tue, 8 May 2018 17:00:51 -0500
