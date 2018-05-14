@@ -1,4 +1,22 @@
 
+* __Externalize the project component__
+
+    [stanislaska](mailto:koffi.ass@gmail.com) - Mon, 14 May 2018 18:18:47 -0500
+    
+    
+
+* __Incrementing to version 0.1.1__
+
+    [djantaio](mailto:github@djanta.io) - Tue, 8 May 2018 17:44:15 -0500
+    
+    
+
+* __0.1.1__
+
+    [djantaio](mailto:github@djanta.io) - Tue, 8 May 2018 17:44:07 -0500
+    
+    
+
 * __Remove commit__
 
     [stanislaska](mailto:koffi.ass@gmail.com) - Tue, 8 May 2018 17:43:05 -0500
