@@ -1,5 +1,6 @@
 'use strict';
 
+let Project = require('./lib/project');
 const Versioning = require('./lib/versioning');
 const Bundle = require('./lib/bundle');
 const CoreRuntimeManager = require('./lib/manager');
@@ -13,6 +14,7 @@ const defaults = {
 };
 
 module.exports = {
+  Project: Project,
   VersionManager: Versioning,
   factory: defaults.factory,
   Platform: Platform
