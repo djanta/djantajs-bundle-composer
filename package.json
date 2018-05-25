@@ -25,6 +25,9 @@
     "url": "https://github.com/djanta/djantajs-compose/issues"
   },
   "homepage": "https://github.com/djanta/djantajs-compose#readme",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "precompile": "npm run clean",
     "clean": "rimraf .djanta-rc.json",
