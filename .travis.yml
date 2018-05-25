@@ -20,6 +20,7 @@ before_install:
 install:
   - echo "Installing ..."
   - bash ~/travis-npm-deploy/deploy.sh --install
+  - npm i --verbose
 script:
   - echo "Npm deploy email= $NPM_EMAIL"
   - npm test
