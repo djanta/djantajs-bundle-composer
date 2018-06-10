@@ -2,3 +2,4 @@ node_modules
 djantajs_*.log
 test/report
 reports
+coverage/
