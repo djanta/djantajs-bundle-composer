@@ -7,12 +7,8 @@ services:
   - node
 branches:
   except:
-    - "/^pr\\..*/"
-    - "/^features\\..*/"
-  only:
-    - master
-    - develop
-    - "/^v[0-9]+\\.){0,2}(\\*|[0-9]+"
+    - '/^pr\\..*/"='
+    - '/^features\\..*/'
 before_install:
   - git clone https://github.com/djanta/travis-npm-deploy.git ~/travis-npm-deploy
   - chmod +x ~/travis-npm-deploy/deploy.sh && chmod +x ~/travis-npm-deploy/npm/*.sh
@@ -20,16 +16,16 @@ before_install:
 install:
   - echo "Installing ..."
   - bash ~/travis-npm-deploy/deploy.sh --install
+  - 'echo "repo_token: $COVERALLS_REPO_TOKEN" >> "./.coveralls.yml"'
   - npm i --verbose
 script:
-  - echo "Npm deploy email= $NPM_EMAIL"
   - npm test
 after_script:
-  - echo "Runing after script djantajs bundle ..."
+  - npm run-script codeclimate-publish
+  - npm run-script coveralls-publish
 after_success:
   - echo "Running after success step ..."
 before_deploy:
-  - echo "Running before deploy step ..."
   - bash ~/travis-npm-deploy/deploy.sh login --user=$NPM_USER --password=$NPM_PWD --email=$NPM_EMAIL
 deploy:
   - provider: script
@@ -55,7 +51,7 @@ notifications:
         by %{author} %{result} in %{duration}
   webhooks:
     urls:
-      - https://webhooks.gitter.im/e/527ecb157afe8c3f6eb9
+      - "$WEBHOOK_GITTER"
     on_success: change
     on_failure: always
     on_start: never
@@ -64,3 +60,6 @@ env:
     - secure: hiUAyDzPyy2QjTgR4C0PjxBHYz698yWe/DnYR7TlqTYJId+MGKS90RZB1k42DLRQ6T+PzCM05HJmzAdk45YeGCsPm2jGBnGdIsO83MbKzItCD215YvaA4DndOUTeLBBPOLmMnsJDGvRn1oz5qD6SPDbuZMk4eW2qVXOqqe9eQogCWnCnF15WiGwo1jUwfPQJoG7qU0vkhEuGZOcopJWy9joD2pBultJPc0Xat4F0Ts04nf/zYRFbEEPcJOmhiVY/le45Z74vrVwAQIIoVdd8hJVVm/mnr75CblPSZpOrRM0r1p1kmIQaEy1Qxqbj6qL+IBuoItk3XeI/IjY0iOFskV2Jo5NnEaUvegUkDGgIJjjATR7vK+Ehl31yrsGgypwEZeDCyzI1bb2ZHUo4+P+a5Lwqx9LQG0xMlHYTo9BZFehiVfREWoAESD25kiTH4yuIEdoorMux3ErasAWjppcj663Mq7iTvALCHxi7iCb67D7T8ynAJgAI/bjYeQuqKEA9MmZGgZdIu13oiVRZEY9qgTBP5PMeQAeYI+lqX2etjih6lGRKXU4XONesRL5ZtnIQ3vdKOhe0HP935EB65kdDovlbsqqrcaFnMFC41GfTu4jf4ORmVi7tDQnitrjauAatYLQd1a9XS5p+HaSLKZdozkWxCgdwqe9TdSxBRUnnAH4=
     - secure: REN/ijR50pLBJEt6UjWglC7pkn2FA6BywWFTVbu2+/Sn5fSBVQCvgnOsOEhZpDwJ0XgP02xGpUpFvpoLkY5ymvGVPIqP23C+K76cE+gOfA17eMjcGPws46rsR4bjBKCWqWONF5j9yE1U7vTTesGacW1X+wtpgMind6tPvQLjykztCv6uHXV0hzYUw/jrsZkzqaekG3/8QmaXAx0PW7AjCqsfUNlRLXjFOOiYEhfpLs1S4ku+z5wFC6l445Nt41vbK9VQDPpJ6vvIfHXZvDP0p4/V1rmhOkP3RIMUF5Di3LDOU4lNIQ/OMoR9Tey8mbwCzvfR/XeH+PQpOLcgdYf4qUqnyRlCWn+LlxZrFYwRdqds0F+h+abOJ6tSJsF9c1/qJu1csr91yKPcZz/yw/prfzVTLgiyllKEkNK3oQxcQbNKSKnuPgkUpwT9cNCTYgnN2VWouckHweK3E4VD5sSDTtA1umN7KmHlhZa/1UDsXMzxZCEVLnMy73NNPppemqrYbAh0tWdx/AUgbW7cpDfWCnJwtjw4Vuqm/FuxqrBs96sR+THMUbO5MuJBPRRd4R9ug0FrPl3rGG7KsJ9aGnIeOWBQ2rqTu6MfFs8UZHU/p2PWDe2BvxX4BpYm7zgk1ubHYNMw3lnaIrz9AKKJnhxekQ8iB0gxCb941HI7QmW3gt0=
     - secure: OIQ97E9S5bezs+F28+lBnQxRedgz1jEn9SlSrqZXPrfKY1PMyYYtHZ66r7PADnUfnFjlxMHVKEjen+AYdD4sOwfrtfICtuLvfGdrqq57YDVP7Vl4eqdo3goD+u7q8qkTIVoCwIMJy2MOI69K4VM0ULoFttYp0afvW1xllmkHBeb5r18Uafio88VV9MUyQCN5Cemw5Y4Ild0iUj7oMDzkb0ebyR6zr4rZARRaJ8AR5FNNg8X8cv9TChn0bbYs9sTuh4K9mmz/FJa08AL7v9nvOEJ2DLvu5AXCNyd2FNrzPo1nnCpFFoUAov2/9y5O3kjEiABVJk8MAkTqWZhZObIQI11+QH7mDehjrE5HKoF4pzuqzl/hRGaWwlnKhWjVvK1KyAWoHVCNT8lE4J2wrSHUOby0pFuXVcjYzw0EiBaG/GPtuhuAd9qrdrYW7hcL6mV5J0B4/PQ4z/uWxtuzSZHQPmdnxbzQCajXFuWU/IUB1ai1WkOZd+6+fR3bimKKxoJtLn+LfuQ9KRBnuaanJVVG2yiMQq66/hqtAX2Nf+EJY8coS5BmHh0HWYO1OmyU1dxIOvEPuwAPcVOp4pz6ORwcLJerDS2myLhh8tiWZN0UIdmElpzmHbfI6DVGNPiwUPnbUfabRWepoiRULTIm3kO0KykE0/KXat2+/W6+EdSb65A=
+    - secure: cev4KqqT/vH0iPYLMXmDBd95jJQ4JJsAf6yJkJvITh4VXh/m2qm/OmyXlXNrM5QMYUoJ13y+OieL4Q5rz1ZTWx0qLklT8VqiLC1hTIMUBLCPPYFF75vhHYI+J7KpGih1Yu52KBEuPkIZnnDOGJMCQiDDUr5RFP1t5EbSMpPi/BiD9CKtGYGlMoq+OTQE+rF2ZrqORYBBPkhq871vNsljPKvqTcTwdJf9tY3qU14wNunDSZ9hcS+yMLNTq+O4ivbtmLi5agZOHa110G1CuR3oWAfSNrbuAUpe4bgT0onWAY3zpTJZrwazxppcyL/j6KcS4Fz6+DXWTBiLXYpgZMGqv0qELiUr2HmvEyIQypsh8gDfeO75COb5Wk+/E7QbH0cE9vPJ8NHNCo3CQ2WgBFEDnUHWq6f/+vemb610VO8ti7MWgFUYr5jAlKT7j74r5ZobOpG4X8AU3MjDcn1z+EGmFBt5/ebCYF18lAnYRhqWGEpgztujD76Axi5sCyTZmrQuA73SC2KaWcagBOhMieTnaZEXv+M7zZ4OY02PFBJi6ogGl2sVdCevILapVfWoxyRujPhyQmF6tyqVjv1GZk7Dx4AX6JvYEV3tUX/4d/ZO8LtYZ3aKNNasiVjs1u5/TUFu862rhyR/daS4guOpjtcGkq4sA/q80Jc5VN+tnq+tEko=
+    - secure: R1zkLe+4VUSIQUc6E5m/5YJouSOagRb0Qd6t6/gaVfEF4UHd/1C1r7ZvnDZXys9Is1ftp6neWW6QJFk9EQbgZUuhyCyo82OZuzrixspINf96aLFYIW4cKR50XJGciJrPdWqVL3rfTsALAchW3s/+6I4KyVQW3ZX9+x6DIXbr07WpmzwUrYG3JncYNpIk3SrZIksgVI9aKrKte3cr43WUBJdOGJKtyHiz3gBke+XYDxk3S1ZbaDV2SIMKdvcwGlunxtjhzBwrxKjlB9/XlD++JozkgGWRbkgtZ7/AOzyR3GGEWGYPfmBG0LzInielZPIEa64OJBSjDsRl02sG9HQ26/zbAKiQICb7vj/JdYUxN1YQXy//Fk2W+R9Jl1OJ+VnZXayGMpjkwW5+kTXbefEQA0SzYy7ubsK/Jp1v0oISLYuNYw9D4zBXdWrNZLwP55bLvTKFlTg57mzDx02hpfRdieEZgZv24AZgM3sC37MrPgtso1whnf9LkHIzxtud6m/Mrhp/ouw8Q47msIT1qV+mlHAkNGisfkuUGBEIXv6hQypRRjW/bYKyM9N/PqT6FnizrVK4ZQuIEj9umEmpAJRmC0KHJaIGHVZ0YzEvLQwGd5KldoNjA3K4W79DPGT+uCVEFdD5DU26CT+clJBmTmhqeynGXRA7ju0e8wq3PK1+noQ=
+    - secure: EyPFltZFhn7gX6rO/Uz/SYtLd6l/QNyJ6m3F9QhC7zPcNbrq2m30C6LgByVDS1mOrUiQl5zmOBunn1sfCR32gdDAeuK50hhebPeADSWNMLvVAlt2GmApHTAnFc2PXal1H6i1IJPR0GuyH32/RUFdUtpIrZ5YRctTGF8dNSXeQydam7IoFPdCgzenUBZlbuwkRZkfLTsUNJX1VfjKi51HqVEm7VEAwreUDK31vpWbhLH/BOPCK/BconOoyWbJSxxzU4mv4hr8V7AiNAwBDmCIeCV8qvmE4PA5Z8D7lho0nHPDblLnAjlfeZdAYKiWw8tNMf4FTcjkaj3NjcelWDwtGgKkQGmKRkU+CBmo9Lp/WExXM9S9BqjkxdN/Vhi2k4Zuw+gCYTHDSLrOZSPWMbV0fzixpgCfDJZnDxlUaMnfnS/AMEqOyAWZZ+iCpQv5P2a0xpKEdGlG8x6s+txFinBeeR2PNL8pEaty1rZJtS4ho/ZGg5TfExmyjwLzO/12E3g99YlNzgsz5wg8j/BdiFKd2LCRkNCCl8tR8ciPCM0ZMoogucHZNKWmHG8RaeFSmmcNCEDTMikzRyrGsAuWzlA+2TL/oisteRxP5L6KFZxs/6OqDdXK7orK/Ne2oX2fdNe4KOXuaQ3gm2eE5AVwWQdoEClVgtm7+a5etgfY/xPi9Hk=
