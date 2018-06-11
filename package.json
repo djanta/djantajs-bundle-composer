@@ -49,7 +49,7 @@
     "npm-registry-client": "^8.5.1"
   },
   "devDependencies": {
-    "mocha": "^4.0.1",
+    "mocha": "^5.0.3",
     "mochawesome": "^3.0.1",
     "rimraf": "^2.6.2",
     "chai": "^4.1.2",
