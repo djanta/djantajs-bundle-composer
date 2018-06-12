@@ -39,7 +39,7 @@
     "build": "npm runscript precompile && npm runscript compile",
     "test": "npm run-script snyk && npm run-script lint && npm run-script mocha",
     "lint": "./node_modules/.bin/eslint --color --ext .js -f html -o ./reports/lint-results.html .",
-    "mocha": "npm run clean && mkdir ./.nyc_output && ./node_modules/.bin/nyc ./node_modules/.bin/_mocha -- ./test/**/**/*.spec.js",
+    "mocha": "npm run clean && mkdir ./.nyc_output && ./node_modules/.bin/nyc --reporter=lcov --reporter=html --reporter=text ./node_modules/.bin/_mocha -- ./test/**/**/*.spec.js",
     "coveralls": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js",
     "codeclimate": "./node_modules/.bin/nyc report --reporter=lcov | ./node_modules/.bin/codeclimate-test-reporter < ./coverage/lcov.info",
     "coverage": "npm run-script coveralls && npm run-script codeclimate",
