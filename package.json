@@ -42,7 +42,7 @@
     "coverage-html": "./node_modules/.bin/_mocha ./test/**/**/*.spec.js --reporter mochawesome --reporter-options reportDir=./mochawesome,reportFilename=result --recursive --timeout 120 --expose-gc --colors",
     "coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec --recursive --timeout 120 --expose-gc ./test/**/**/*.spec.js",
     "coveralls-publish": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "codeclimate-publish": "./node_modules/mocha/bin/codeclimate-test-reporter < ./coverage/lcov.info",
+    "codeclimate-publish": "./node_modules/.bin/codeclimate-test-reporter < ./coverage/lcov.info",
     "coverage-publish": "npm run coveralls-publish && npm run codeclimate-publish",
     "snyk": "./node_modules/.bin/snyk test --file=./package.json",
     "snyk-login": "./node_modules/.bin/snyk auth",
