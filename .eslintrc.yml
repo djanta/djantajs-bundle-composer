@@ -1,0 +1,22 @@
+---
+root: true
+parser: esprima
+parserOptions:
+  ecmaVersion: 6
+  ecmaFeatures:
+    impliedStrict: false
+
+extends:
+  - eslint:recommended
+  - djantajs
+
+env:
+  node: true
+  es6: true
+  jasmine: true
+
+globals:
+  djantajs: true
+  logger: true
+  after: true
+  before: true

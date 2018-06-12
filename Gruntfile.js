@@ -1,12 +1,15 @@
 'use strict';
 
+let loader = require('load-grunt-tasks');
+
 module.exports = function (grunt) {
+  loader(grunt);
 
-  require('load-grunt-tasks')(grunt);
+  grunt.loadTasks('grunt-tasks'); // Load all grunt tasks (modules) in
+  // the grunt-tasks directory.
 
-  grunt.loadTasks('grunt-tasks'); // Load all grunt tasks (modules) in the grunt-tasks directory.
-
-  grunt.registerTask('compile', 'djanta.io runtime resource generator i.e: .djanta.rc.json', function () {
+  grunt.registerTask('compile', 'djanta.io runtime resource generator i.e: ' +
+    '.djanta.rc.json', () => {
     grunt.task.run(['bundlerc']);
   });
 
