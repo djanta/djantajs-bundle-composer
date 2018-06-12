@@ -3,26 +3,26 @@ language: node_js
 dist: trusty
 node_js:
   - '8'
-services:
-  - node
+#services:
+#  - node
 branches:
   except:
-    - '/^pr\\..*/"='
-    - '/^features\\..*/'
+    - /^pr\\..*/"=
+    - "/^features\\\\..*/"
 before_install:
   - git clone https://github.com/djanta/travis-npm-deploy.git ~/travis-npm-deploy
   - chmod +x ~/travis-npm-deploy/deploy.sh && chmod +x ~/travis-npm-deploy/npm/*.sh
   - bash ~/travis-npm-deploy/deploy.sh --git-config
 install:
-  - echo "Installing ..."
   - bash ~/travis-npm-deploy/deploy.sh --install
-  - 'echo "repo_token: $COVERALLS_REPO_TOKEN" >> "./.coveralls.yml"'
+  - 'echo "repo_token: $COVERALLS_REPO_TOKEN" > "./.coveralls.yml"'
   - npm i --verbose
 script:
+  - "./node_modules/.bin/snyk auth $SNYK_TOKEN"
   - npm test
 after_script:
-  - npm run-script codeclimate-publish
-  - npm run-script coveralls-publish
+  - npm run-script coverage-publish
+  - npm run-script snyk-publish
 after_success:
   - echo "Running after success step ..."
 before_deploy:
@@ -44,7 +44,6 @@ notifications:
     rooms:
       - djantaio:1GeeSv1noSekK9to1yTqsbDw#travis-ci
       - djantaio:1GeeSv1noSekK9to1yTqsbDw#djantajs
-      - djantaio:1GeeSv1noSekK9to1yTqsbDw#tools
     on_success: always
     template:
       - Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch}
@@ -63,3 +62,4 @@ env:
     - secure: cev4KqqT/vH0iPYLMXmDBd95jJQ4JJsAf6yJkJvITh4VXh/m2qm/OmyXlXNrM5QMYUoJ13y+OieL4Q5rz1ZTWx0qLklT8VqiLC1hTIMUBLCPPYFF75vhHYI+J7KpGih1Yu52KBEuPkIZnnDOGJMCQiDDUr5RFP1t5EbSMpPi/BiD9CKtGYGlMoq+OTQE+rF2ZrqORYBBPkhq871vNsljPKvqTcTwdJf9tY3qU14wNunDSZ9hcS+yMLNTq+O4ivbtmLi5agZOHa110G1CuR3oWAfSNrbuAUpe4bgT0onWAY3zpTJZrwazxppcyL/j6KcS4Fz6+DXWTBiLXYpgZMGqv0qELiUr2HmvEyIQypsh8gDfeO75COb5Wk+/E7QbH0cE9vPJ8NHNCo3CQ2WgBFEDnUHWq6f/+vemb610VO8ti7MWgFUYr5jAlKT7j74r5ZobOpG4X8AU3MjDcn1z+EGmFBt5/ebCYF18lAnYRhqWGEpgztujD76Axi5sCyTZmrQuA73SC2KaWcagBOhMieTnaZEXv+M7zZ4OY02PFBJi6ogGl2sVdCevILapVfWoxyRujPhyQmF6tyqVjv1GZk7Dx4AX6JvYEV3tUX/4d/ZO8LtYZ3aKNNasiVjs1u5/TUFu862rhyR/daS4guOpjtcGkq4sA/q80Jc5VN+tnq+tEko=
     - secure: R1zkLe+4VUSIQUc6E5m/5YJouSOagRb0Qd6t6/gaVfEF4UHd/1C1r7ZvnDZXys9Is1ftp6neWW6QJFk9EQbgZUuhyCyo82OZuzrixspINf96aLFYIW4cKR50XJGciJrPdWqVL3rfTsALAchW3s/+6I4KyVQW3ZX9+x6DIXbr07WpmzwUrYG3JncYNpIk3SrZIksgVI9aKrKte3cr43WUBJdOGJKtyHiz3gBke+XYDxk3S1ZbaDV2SIMKdvcwGlunxtjhzBwrxKjlB9/XlD++JozkgGWRbkgtZ7/AOzyR3GGEWGYPfmBG0LzInielZPIEa64OJBSjDsRl02sG9HQ26/zbAKiQICb7vj/JdYUxN1YQXy//Fk2W+R9Jl1OJ+VnZXayGMpjkwW5+kTXbefEQA0SzYy7ubsK/Jp1v0oISLYuNYw9D4zBXdWrNZLwP55bLvTKFlTg57mzDx02hpfRdieEZgZv24AZgM3sC37MrPgtso1whnf9LkHIzxtud6m/Mrhp/ouw8Q47msIT1qV+mlHAkNGisfkuUGBEIXv6hQypRRjW/bYKyM9N/PqT6FnizrVK4ZQuIEj9umEmpAJRmC0KHJaIGHVZ0YzEvLQwGd5KldoNjA3K4W79DPGT+uCVEFdD5DU26CT+clJBmTmhqeynGXRA7ju0e8wq3PK1+noQ=
     - secure: EyPFltZFhn7gX6rO/Uz/SYtLd6l/QNyJ6m3F9QhC7zPcNbrq2m30C6LgByVDS1mOrUiQl5zmOBunn1sfCR32gdDAeuK50hhebPeADSWNMLvVAlt2GmApHTAnFc2PXal1H6i1IJPR0GuyH32/RUFdUtpIrZ5YRctTGF8dNSXeQydam7IoFPdCgzenUBZlbuwkRZkfLTsUNJX1VfjKi51HqVEm7VEAwreUDK31vpWbhLH/BOPCK/BconOoyWbJSxxzU4mv4hr8V7AiNAwBDmCIeCV8qvmE4PA5Z8D7lho0nHPDblLnAjlfeZdAYKiWw8tNMf4FTcjkaj3NjcelWDwtGgKkQGmKRkU+CBmo9Lp/WExXM9S9BqjkxdN/Vhi2k4Zuw+gCYTHDSLrOZSPWMbV0fzixpgCfDJZnDxlUaMnfnS/AMEqOyAWZZ+iCpQv5P2a0xpKEdGlG8x6s+txFinBeeR2PNL8pEaty1rZJtS4ho/ZGg5TfExmyjwLzO/12E3g99YlNzgsz5wg8j/BdiFKd2LCRkNCCl8tR8ciPCM0ZMoogucHZNKWmHG8RaeFSmmcNCEDTMikzRyrGsAuWzlA+2TL/oisteRxP5L6KFZxs/6OqDdXK7orK/Ne2oX2fdNe4KOXuaQ3gm2eE5AVwWQdoEClVgtm7+a5etgfY/xPi9Hk=
+    - secure: 0wYE4FeVKhUTtuTupNc5+5hAdlUJ8zuTPCQCs1MNa/E9crkuFBiAYzYqDjuLJd6Tey2EDDxOluSVaF/0r7AV8dMzRV1Gl2YZJtLxR2Xa9M8JcrZAEe2Wh7HoHxSutwZcs6ULVIjMt72i0pwEnTqAOH/fMiR8gkASb+wvuwKpiJ9TRqfilTwP2GfNqtE8yUsF1h8KNpe8ei2a5YRnOu9o43sh4wjS2kSMK0Mx2IcMxbbQjMzAS/YNNbqV51PRcBcNbZ9Dy3soyYSeTzLiKO1R9dpLLS9Xjm2MX0QEKii3cHpbybqb90m1OU5XUbwG5Uv2tVNSEknNcx8U0REBrG0Ma4bVJGwupQKkS4Ci8sCXx2/H574097q1xCWdDZ3c1WRcG6bDWNv+aZ8JYydezfL0vpBdmmt+EfZYiWXur+NOYBbGNVDKb6gsoDeiqNUmeUg139g9AvkTHyCnA8bcJk5ViCjVf/bXE7sHNwHhSigdrOUi09tf7MZyW4TlFO/nMrJ87yeXm1b8H19BVNyCEDv4lubbyBkAsJnu6jX9ce9roYntah+jO07a4wlJulRHZRBl2ajshw0PDybxVk6CSDzu2PBTYreXlIMthR6u0mlcJFxjxS+Od2cWRvbpRyALXYVEn3XNQvyPo68nh/MOfk34LLcMovrnlr1H4H9SFABl7Hg=

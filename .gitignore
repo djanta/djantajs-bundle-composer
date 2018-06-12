@@ -3,3 +3,4 @@ djantajs_*.log
 test/report
 reports
 coverage/
+mochawesome/

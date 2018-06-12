@@ -3,7 +3,7 @@
   "description": "djantajs package builder core bundle",
   "version": "0.1.3",
   "engines": {
-    "node": ">=7.0.0",
+    "node": ">=6.0.0",
     "npm": ">=4.6.0"
   },
   "repository": {
@@ -35,31 +35,31 @@
   "scripts": {
     "precompile": "npm run clean",
     "clean": "rimraf .djanta-rc.json",
-    "compile": "echo .",
+    "compile": "echo compiling ...",
     "build": "npm run precompile && npm run compile",
-    "test": "npm run coverage",
+    "test": "npm run snyk && npm run lint && npm run coverage",
     "lint": "./node_modules/.bin/eslint --color --ext .js -f html -o ./reports/lint-results.html .",
-    "hint": "./node_modules/.bin/jshint --verbose --config .jshintrc --reporter jslint",
-    "coverage": "./node_modules/.bin/_mocha ./test/**/**/*.spec.js --reporter mochawesome --reporter-options reportDir=./test/report,reportFilename=result --recursive --timeout 18000 --expose-gc --colors",
-    "cover": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/**/**/*.spec.js",
+    "coverage-html": "./node_modules/.bin/_mocha ./test/**/**/*.spec.js --reporter mochawesome --reporter-options reportDir=./mochawesome,reportFilename=result --recursive --timeout 120 --expose-gc --colors",
+    "coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec --recursive --timeout 120 --expose-gc ./test/**/**/*.spec.js",
     "coveralls-publish": "cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
     "codeclimate-publish": "./node_modules/mocha/bin/codeclimate-test-reporter < ./coverage/lcov.info",
-    "snyk": "./node_modules/.bin/snyk auth && ./node_modules/.bin/snyk test --file=./package.json"
+    "coverage-publish": "npm run coveralls-publish && npm run codeclimate-publish",
+    "snyk": "./node_modules/.bin/snyk test --file=./package.json",
+    "snyk-login": "./node_modules/.bin/snyk auth",
+    "snyk-monitor": "./node_modules/.bin/snyk monitor --file=./package.json",
+    "snyk-publish": "./node_modules/.bin/snyk wizard --file=./package.json"
   },
   "bin": {
     "djantajs-compose": "./bin/cli.js"
   },
   "main": "index.js",
   "dependencies": {
-    "string": "^3.3.3",
     "dynavers": "^0.2.0",
     "semver": "^5.5.0",
     "mkdirp": "^0.5.1",
     "lodash": "^4.17.10",
     "chalk": "^2.4.1",
-    "command-line-args": "^5.0.2",
-    "npm-registry": "^0.1.13",
-    "npm-registry-client": "^8.5.1"
+    "command-line-args": "^5.0.2"
   },
   "devDependencies": {
     "mocha": "^4.0.1",
@@ -68,7 +68,7 @@
     "chai": "^4.1.2",
     "chai-json-equal": "^0.0.1",
     "chai-like": "^1.1.1",
-    "eslint-config-djantajs": "^1.0.0",
+    "eslint-config-djantajs": "^1.1.0",
     "eslint": "^4.19.1",
     "coveralls": "^3.0.1",
     "istanbul": "^0.4.5",
