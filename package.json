@@ -54,21 +54,21 @@
   },
   "main": "index.js",
   "dependencies": {
-    "dynavers": "^0.2.0",
     "semver": "^5.5.0",
     "mkdirp": "^0.5.1",
     "lodash": "^4.17.10",
     "chalk": "^2.4.1",
-    "command-line-args": "^5.0.2"
+    "command-line-args": "^5.0.2",
+    "command-line-usage": "^5.0.5"
   },
   "devDependencies": {
-    "mocha": "^4.0.1",
-    "mochawesome": "^3.0.1",
+    "mocha": "^5.2.0",
+    "mochawesome": "^3.0.2",
     "rimraf": "^2.6.2",
     "chai": "^4.1.2",
     "chai-json-equal": "^0.0.1",
     "chai-like": "^1.1.1",
-    "eslint-config-djantajs": "^1.1.0",
+    "eslint-config-djantajs": "^1.1.1",
     "eslint": "^4.19.1",
     "coveralls": "^3.0.1",
     "istanbul": "^0.4.5",
