@@ -4,3 +4,6 @@ test/report
 reports
 coverage/
 mochawesome/
+.nyc_output
+alternative
+alternative-tmp

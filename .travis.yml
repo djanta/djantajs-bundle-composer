@@ -18,12 +18,11 @@ install:
   - npm run-script snyk-login -- $SNYK_TOKEN
 script:
   - npm test
-  - npm run-script coverage
 after_script:
-  - npm run-script coverage-publish
+  # - npm run-script coverage-push
 after_success:
-  - echo "Publishing snyk monitoring snapshot"
   - npm run-script snyk-monitor
+  - npm run-script coverage
 before_deploy:
   - bash ~/travis-npm-deploy/deploy.sh login --user=$NPM_USER --password=$NPM_PWD --email=$NPM_EMAIL
 deploy:

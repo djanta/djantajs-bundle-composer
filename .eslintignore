@@ -2,3 +2,6 @@ coverage
 **/templates
 mochawesome
 reports
+.nyc_output
+alternative
+alternative-tmp
