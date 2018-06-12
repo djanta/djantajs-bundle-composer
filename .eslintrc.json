@@ -1,0 +1,26 @@
+{
+  "parser": "esprima",
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "impliedStrict": false,
+      "jsx": true
+    }
+  },
+  "extends": ["eslint:recommended", "djantajs"],
+  "env": {
+    "jasmine": true,
+    "es6": true,
+    "node": true
+  },
+  "globals": {
+    "document": false,
+    "navigator": false,
+    "window": false,
+    "djantajs": true,
+    "logger": true,
+    "after": true,
+    "before": true
+  }
+}

@@ -11,12 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactoring `test corverage` and the unit test spec.
 - Add codeclimate `Maintainability` and `Test Coverage` badges
 - Finilizing default mandatory rules implemetation
+- Fixing `.eslintrc.json` configuration file
 
 ### Changed
 - Introducing `snyk` for dependencies vulnerability check
 
 ### Remove
 - Remove `istanbul` dependency
+- Remove `.eslintrc.yml` configuration file
 
 ## [0.0.1] - 2018-05-25
 ### Added
