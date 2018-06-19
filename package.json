@@ -47,7 +47,9 @@
     "snyk": "./node_modules/.bin/snyk test --file=./package.json",
     "snyk-login": "./node_modules/.bin/snyk auth",
     "snyk-monitor": "./node_modules/.bin/snyk monitor --file=./package.json",
-    "snyk-publish": "./node_modules/.bin/snyk wizard --file=./package.json"
+    "snyk-publish": "./node_modules/.bin/snyk wizard --file=./package.json",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "bin": {
     "djantajs-compose": "./bin/cli.js"
@@ -59,7 +61,8 @@
     "lodash": "^4.17.10",
     "chalk": "^2.4.1",
     "command-line-args": "^5.0.2",
-    "command-line-usage": "^5.0.5"
+    "command-line-usage": "^5.0.5",
+    "snyk": "^1.83.0"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
@@ -72,7 +75,7 @@
     "eslint": "^4.19.1",
     "coveralls": "^3.0.1",
     "istanbul": "^0.4.5",
-    "codeclimate-test-reporter": "^0.5.0",
-    "snyk": "^1.82.1"
-  }
+    "codeclimate-test-reporter": "^0.5.0"
+  },
+  "snyk": true
 }
