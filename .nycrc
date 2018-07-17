@@ -7,12 +7,6 @@
     "statements": 99,
     "functions": 99,
     "branches": 99,
-    "watermarks": {
-      "lines": [80, 95],
-      "functions": [80, 95],
-      "branches": [80, 95],
-      "statements": [80, 95]
-    },
     "include": [
       "**/*.js"
     ],
@@ -26,9 +20,6 @@
       "clover",
       "html"
     ],
-    "require": [
-      "./test/helpers/some-helper.js"
-    ],
     "extension": [
       ".jsx",
       ".js"
@@ -36,6 +27,8 @@
     "cache": true,
     "all": true,
     "temp-directory": "./alternative-tmp",
-    "report-dir": "./alternative"
+    "report-dir": "./alternative",
+    "sourceMap": false,
+    "instrument": false
   }
 }

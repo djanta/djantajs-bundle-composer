@@ -2,7 +2,10 @@
 
 let fs = require('fs');
 
-let options = () => {
+/**
+ * Export `options`.
+ */
+module.exports = () => {
   if (process.argv.length > 3 && (process.argv[2] !== '-h' ||
     process.argv[2] !== '--help')) {
     let pargv = process.argv;
@@ -27,8 +30,3 @@ let options = () => {
     return void undefined;
   }
 };
-
-/**
- * Export `options`.
- */
-module.exports = options;

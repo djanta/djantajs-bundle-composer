@@ -19,7 +19,8 @@ chai.use(like);
 chai.use(chaiJsonEqual);
 
 describe('testing djantajs packaging compose', () => {
-  let pltf; let manager;
+  let pltf;
+  let manager;
 
   /**
    * After execute all the test unit
