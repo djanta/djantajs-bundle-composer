@@ -4,6 +4,8 @@ let fs = require('fs');
 
 /**
  * Export `options`.
+ * @return {{}|undefined} return the commmand line parsed or
+ *  <code>undefined</code> otherwise
  */
 module.exports = () => {
   if (process.argv.length > 3 && (process.argv[2] !== '-h' ||

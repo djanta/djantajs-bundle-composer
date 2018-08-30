@@ -6,18 +6,18 @@ let like = require('chai-like');
 let chai = require('chai');
 let chaiJsonEqual = require('chai-json-equal');
 
-let Bundle = require('../../lib/bundle');
+let Bundle = require('../lib/bundle');
 
 // chai context initialization
 chai.use(like);
 chai.use(chaiJsonEqual);
 chai.should();
 
-describe('Bundle', () => {
+describe('index', () => {
   /**
    * Testing uninitialized project
    */
-  describe('#project uninitialized', () => {
+  describe('#project', () => {
     let bundle;
 
     /**

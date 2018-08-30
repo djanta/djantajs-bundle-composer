@@ -51,7 +51,8 @@ module.exports = class CliGroup {
     let self = this;
     let render = self._definition.render;
     return !_.isNil(render) && _.isFunction(render) ?
-      render(self, registry) : {
+      render(self, registry) :
+      {
         content: self.description,
         header: self.title,
         optionList: [

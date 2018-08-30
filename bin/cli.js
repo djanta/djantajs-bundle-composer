@@ -2,10 +2,9 @@
 
 'use strict';
 
-let { xarg } = require ('../index');
+let { xarg } = require('../index');
 
 try {
-
   xarg.createCommand('serve', {
     options: ['help', 'port', 'iface', 'live-project', 'version'],
     description: 'Runs the djantajs development server'
@@ -18,7 +17,8 @@ try {
       description: 'Print the current server and runtime version information'
     })
     .createOption('help', {
-      global: true, alias: 'h',
+      global: true,
+      alias: 'h',
       order: -1,
       description: 'Global helper option'
     })

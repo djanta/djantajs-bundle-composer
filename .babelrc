@@ -1,0 +1,47 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "current"
+      }
+    }],
+    "es2017-node7",
+    "node",
+    "stage-2"
+  ],
+  "plugins": [
+    "istanbul",
+    "lodash",
+    "transform-runtime",
+    "transform-async-to-generator",
+    "syntax-async-functions"
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        "istanbul",
+        "lodash",
+        "syntax-async-functions",
+        "transform-regenerator",
+        "transform-runtime"
+      ]
+    },
+    "development": {
+      "plugins": [
+        "istanbul",
+        "lodash",
+        "transform-async-to-generator",
+        "transform-runtime",
+        "syntax-async-functions"
+      ]
+    },
+    "production": {
+      "plugins": [
+        "istanbul",
+        "lodash",
+        "transform-runtime",
+        "syntax-async-functions"
+      ]
+    }
+  }
+}

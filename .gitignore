@@ -7,3 +7,5 @@ mochawesome/
 .nyc_output
 alternative
 alternative-tmp
+coverage
+xarg/xarg2.js

@@ -33,7 +33,7 @@ module.exports = class BundleTestingPlatform extends LibPlatform {
     mkdirp(this._cwd, (err) => {
       if (err) { console.error(err); }
       else {
-        console.log('Working {%s} directory has been created!', this._cwd);
+        // console.log('Working {%s} directory has been created!', this._cwd);
       }
     });
     /* eslint-enable no-console */

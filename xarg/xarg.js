@@ -1,9 +1,6 @@
 'use strict';
 
-let CliBlock = require('./block');
 let _ = require('lodash');
-
-
 let commandLineUsage = require('command-line-usage');
 let commandLineArgs = require('command-line-args');
 
@@ -16,6 +13,9 @@ let commandLineArgs = require('command-line-args');
 module.exports = class CliCommand {
   /**
    * Qualified default class constructor
+   *
+   * @param {string} name the given comman name
+   * @param {{}} definition the given command definition
    * @constructor
    */
   constructor (name, definition = {}) {
@@ -25,7 +25,7 @@ module.exports = class CliCommand {
 
   /**
    * Gets the commad name.
-   * @returns {String|*} a string name that describe the comman name
+   * @return {String|*} a string name that describe the comman name
    */
   get name () { return this._name; }
 
@@ -33,7 +33,7 @@ module.exports = class CliCommand {
    * Gets the commander.
    * @return {number} a valid defined command order or <code>0</code> by default
    */
-  get order () { return 0; }
+  get order () { return this._definition.order || 0; }
 
   /**
    * Gets the command description
@@ -64,12 +64,12 @@ module.exports = class CliCommand {
     return name && !_.isBoolean(name) && this._name === name;
   }
 
-  /**
-   * Fitler the given command line arguments
-   * @param {[*]|{}} argv the given command line argumetns
-   * @return {{}} the filtered command line arguments.
-   */
-  filter (argv = {}) { return argv; }
+  // /**
+  // * Fitler the given command line arguments
+  // * @param {[*]|{}} argv the given command line argumetns
+  // * @return {{}} the filtered command line arguments.
+  // */
+  // filter (argv = {}) { return argv; }
 
   /**
    * Abstract command configuration method.
@@ -89,12 +89,13 @@ module.exports = class CliCommand {
         return a.isGlobal() === b.isGlobal() ?
           0 :
           a.isGlobal() && !b.isGlobal() ?
-            -1 : 1;
+            -1 :
+            1;
       }) || [], arg => arg.toJson()));
 
       return self._configure; // gets back the configured object ...
     }
-    else { return self._configure; }
+    return self._configure;
   }
 
   /**
@@ -119,18 +120,18 @@ module.exports = class CliCommand {
     if (_.isNil(self._definition) || _.isNil(self._definition.run)) {
       let runDefinitions = self.configure(registry);
 
-      console.log('RunDefinitions:\n%s', JSON.stringify(runDefinitions, null, 2));
-
       let runOptions = commandLineArgs(runDefinitions, {
         argv, stopAtFirstUnknown: true
       });
 
-      argv = runOptions._unknown || [];
+      // argv = runOptions._unknown || [];
 
+      /* eslint-disable no-console */
       console.log('%s', JSON.stringify(runOptions, null, 2));
+      /* eslint-enable no-console */
     }
     else if (_.isFunction(self._definition.run)) {
-      self._definition.run(command, argv, () => {});
+      self._definition.run(command, argv, () => true);
     }
   }
 };

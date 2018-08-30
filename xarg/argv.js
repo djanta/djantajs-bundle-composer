@@ -84,7 +84,7 @@ module.exports = class CliArgv {
    * @return {boolean} Might return <code>true</code> while the current argument
    *  should be used as default argument or <code>false</code> otherwise.
    */
-  isDefault () { return this._definition.default || false; }
+  isDefault () { return this._definition['default'] || false; }
 
   /**
    * Convert the current command line argument to json object representation
@@ -99,7 +99,7 @@ module.exports = class CliArgv {
       multiple: self.isMultiple(),
       alias: self.alias,
       lazyMultiple: self.isLazy(),
-      defaultValue: self.default,
+      defaultValue: self['default'],
       typeLabel: self.label,
       group: self.group,
       description: self.description

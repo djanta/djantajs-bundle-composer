@@ -1,6 +1,7 @@
 {
-  "name": "djantajs-compose",
+  "name": "djantajs-bundle-composer",
   "description": "djantajs package builder core bundle",
+  "homepage": "https://djantajs.io",
   "version": "0.1.3",
   "engines": {
     "node": ">=6.0.0",
@@ -8,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/djanta/djantajs-compose.git"
+    "url": "https://github.com/djanta/djantajs-bundle-composer.git"
   },
   "keywords": [
     "compose",
@@ -18,17 +19,17 @@
     "manifest",
     "packaging",
     "package",
-    "assembly"
+    "assembly",
+    "assembler"
   ],
-  "author": "djantajs.team@djanta.io",
+  "author": "djantajs.team@djantajs.io",
   "contributors": [
     "Stanislas KOFFI ASSOUTOVI <stanislaska@djantajs.io> (https://github.com/stanislaska)"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/djanta/djantajs-compose/issues"
+    "url": "https://github.com/djanta/djantajs-bundle-composer/issues"
   },
-  "homepage": "https://github.com/djanta/djantajs-compose#readme",
   "publishConfig": {
     "access": "public"
   },
@@ -37,16 +38,19 @@
     "clean": "rimraf .djanta-rc.json .nyc_output coverage reports",
     "compile": "echo compiling ...",
     "build": "npm run precompile && npm run compile",
-    "test": "npm run snyk && npm run lint && npm run mocha",
-    "lint": "./node_modules/.bin/eslint --color --ext .js -f html -o ./reports/lint-results.html .",
-    "mocha": "npm run compile && mkdir ./.nyc_output && ./node_modules/.bin/nyc --reporter=lcov --reporter=html --reporter=text ./node_modules/.bin/_mocha -- ./test/**/**/*.spec.js",
-    "coveralls": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js",
-    "codeclimate": "./node_modules/.bin/nyc report --reporter=lcov | ./node_modules/.bin/codeclimate-test-reporter < ./coverage/lcov.info",
-    "coverage": "npm run-script coveralls && npm run-script codeclimate",
+    "prepublish": "npm run test && npm run clean && npm run build",
+    "test": "npm run snyk && npm run test:init && npm run lint:eslint && npm run test:nyc",
+    "test:init": "./node_modules/.bin/cross-env NODE_ENV=test && npm run compile && mkdir ./.nyc_output",
+    "test:mocha": "./node_modules/.bin/_mocha --recursive -- test/**/**/*.spec.js",
+    "test:nyc": "./node_modules/.bin/nyc --reporter html --reporter text --require babel-register npm run test:mocha",
+    "lint:eslint": "./node_modules/.bin/eslint --color --ext .js -f html -o ./reports/lint-results.html .",
+    "coverage": "npm run coverage:coveralls && npm run coverage:codeclimate",
+    "coverage:codeclimate": "./node_modules/.bin/nyc report --reporter=lcov | ./node_modules/.bin/codeclimate-test-reporter < ./coverage/lcov.info",
+    "coverage:coveralls": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js",
     "snyk": "./node_modules/.bin/snyk test --file=./package.json",
-    "snyk-login": "./node_modules/.bin/snyk auth",
-    "snyk-monitor": "./node_modules/.bin/snyk monitor --file=./package.json",
-    "snyk-publish": "./node_modules/.bin/snyk wizard --file=./package.json"
+    "snyk:publish": "./node_modules/.bin/snyk wizard --file=./package.json",
+    "snyk:monitor": "./node_modules/.bin/snyk monitor --file=./package.json",
+    "snyk:login": "./node_modules/.bin/snyk auth"
   },
   "bin": {
     "djantajs-compose": "./bin/cli.js"
@@ -58,7 +62,8 @@
     "lodash": "^4.17.10",
     "chalk": "^2.4.1",
     "command-line-args": "^5.0.2",
-    "command-line-usage": "^5.0.5"
+    "command-line-usage": "^5.0.5",
+    "inquirer": "^6.2.0"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
@@ -72,6 +77,22 @@
     "coveralls": "^3.0.1",
     "codeclimate-test-reporter": "^0.5.0",
     "snyk": "^1.82.1",
-    "nyc": "^12.0.2"
+    "nyc": "^12.0.2",
+    "cross-env": "^5.2.0",
+    "babel-core": "^6.26.3",
+    "babel-eslint": "^8.2.6",
+    "babel-loader": "^7.1.5",
+    "babel-plugin-istanbul": "^4.1.6",
+    "babel-plugin-lodash": "^3.3.4",
+    "babel-plugin-syntax-async-functions": "^6.13.0",
+    "babel-plugin-transform-regenerator": "^6.26.0",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-node": "^5.1.1",
+    "babel-preset-es2017-node7": "^0.5.2",
+    "babel-preset-stage-2": "^6.24.1",
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
+    "babel-runtime": "^6.26.0"
   }
 }

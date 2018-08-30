@@ -7,27 +7,22 @@
     "statements": 99,
     "functions": 99,
     "branches": 99,
-    "include": [
-      "**/*.js"
-    ],
+    "watermarks": {
+      "lines": [80, 95],
+      "functions": [80, 95],
+      "branches": [80, 95],
+      "statements": [80, 95]
+    },
+    "include": [ "bin/**/*.js", "lib/**/*.js", "xarg/**/*.js" ],
     "exclude": [
       "**/*.spec.js",
-      "build"
+      "**/node_modules/**"
     ],
-    "reporter": [
-      "lcov",
-      "text-summary",
-      "clover",
-      "html"
-    ],
-    "extension": [
-      ".jsx",
-      ".js"
-    ],
+    "reporter": [ "html", "text", "lcov", "text-summary", "clover", "mochawesome" ],
+    "extension": [ ".js", ".jsx" ],
+    "require": [ "babel-register" ],
     "cache": true,
     "all": true,
-    "temp-directory": "./alternative-tmp",
-    "report-dir": "./alternative",
     "sourceMap": false,
     "instrument": false
   }

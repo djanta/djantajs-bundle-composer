@@ -10,8 +10,6 @@ let commandLineArgs = require('command-line-args');
 let commandLineUsage = require('command-line-usage');
 let _ = require('lodash');
 
-let util = require('util');
-
 let CliArgv = require('./xarg/argv');
 let CliCommad = require('./xarg/xarg');
 let CliBlock = require('./xarg/block');
@@ -26,14 +24,15 @@ let defaults = {
         order: 0,
         render: (context, registry = {}) => {
           return _.defaults({ header: context.title }, {
-            content: _.map(registry.command || [], xarg => {
+            content: _.map(registry.command || [], (xarg) => {
               return { name: xarg.name, summary: xarg.description };
             })
           });
         }
       }),
       new CliBlock('global', {
-        title: 'Global Options', order: 1,
+        title: 'Global Options',
+        order: 1,
         render: (context, registry = {}) => {
           return _.defaults({ header: context.title }, {
             optionList: _.map(_.filter(registry.argv || [], a => a.isGlobal()),
@@ -51,8 +50,10 @@ let defaults = {
     if (_.isNil(xarg)) {
       let block = _.reduce(defaults.registry.group.sort((a, b) => {
         return a.order === b.order ?
-          0 : a.order < b.order ?
-            -1 : 1;
+          0 :
+          a.order < b.order ?
+            -1 :
+            1;
       }), (stash, a) => stash.concat(a.toJson(defaults.registry)), []);
 
       /* eslint-disable no-console */
@@ -64,27 +65,24 @@ let defaults = {
     }
   },
   main: new CliCommad('', {
-    run: (command = void undefined, argv = {}) => {
-      let reg = defaults.registry;
-      let unknow = argv['_unknown'] || [];
-
+    run: (command = void undefined, argv = []) => {
       switch (command) {
-        case 'help':
-        case undefined:
-        case '':
-          let xarg = unknow.length === 0 ?
+        case 'help': {
+          defaults.helper(argv.length === 0 ?
             void undefined :
-            _.find(reg.command || [], arg => arg.accept(unknow[0]));
-          defaults.helper(xarg); // print the main command helper
-        break;
+            _.find(defaults.registry.command || [], a => a.accept(argv[0])));
+          break;
+        }
         default: {
-          let xarg = _.find(reg.command || [], arg => arg.accept(command));
-          let help = unknow.length > 0 && (!!~unknow.indexOf('-h') ||
-            !!~unknow.indexOf('--help'));
+          let xarg = _.find(defaults.registry.command || [],
+            arg => arg.accept(command));
 
-          if (_.isNil(xarg) || help) { defaults.helper(xarg || undefined); }
+          if (_.isNil(xarg) || (argv.length > 0 && (!!~argv.indexOf('-h') ||
+              !!~argv.indexOf('--help')))) {
+            defaults.helper(xarg || undefined);
+          }
           else {
-            return xarg.execute(unknow, command, reg); // run the command
+            return xarg.execute(argv, command, defaults.registry);
           }
         }
       }
@@ -92,41 +90,42 @@ let defaults = {
   })
 };
 
-let xarg = (origin = void undefined) => {
-  let context = {
-    configure: (options = {}) => { return context; },
+let xcommander = () => {
+  let origin = {
+    configure: (options = {}) => { return origin; },
     createBlock: (name, definition = {}) => {
       let group = new CliBlock(name, definition);
-      let reg = defaults.registry['group'] = defaults.registry['group'] || [];
+      let reg = defaults.registry.group = defaults.registry.group || [];
 
       reg.push(group); // register the given argument option group ...
-      return context;
+      return origin;
     },
     createOption: (name, definition = {}) => {
       let argv = new CliArgv(name, definition || {});
-      let reg = defaults.registry['argv'] = defaults.registry['argv'] || [];
+      let reg = defaults.registry.argv = defaults.registry.argv || [];
 
       reg.push(argv); // register the given argument option ...
-      return context;
+      return origin;
     },
     createCommand: (name, definition) => {
       let command = new CliCommad(name, definition || {});
-      let reg = defaults.registry['command'] = defaults.registry['command'] ||
+      let reg = defaults.registry.command = defaults.registry.command ||
         [];
 
       reg.push(command); // register the given command ...
-      return context;
+      return origin;
     },
     run: (argv = process.argv) => {
       let config = _.defaults({}, defaults.config);
       let xarg = commandLineArgs(config, { stopAtFirstUnknown: true, argv });
 
       // execute the main commander ...
-      defaults.main.execute(xarg, xarg.command || xarg.help, defaults.registry);
+      defaults.main.execute(xarg._unknown || [], xarg.command || xarg.help,
+        defaults.registry);
     }
   };
 
-  return context;
+  return origin;
 };
 
 module.exports = {
@@ -136,6 +135,6 @@ module.exports = {
     createBundle: (def, mgr = () => void undefined) => new Bundle(mgr, def),
     createManager: (p, vm = new Versioning()) => new ProjectManager(p, vm)
   },
-  xarg: xarg(),
+  xarg: xcommander(),
   Platform: Platform
 };

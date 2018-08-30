@@ -1,6 +1,6 @@
 'use strict';
 
-let { expect } = require('chai');
+// let { expect } = require('chai');
 let like = require('chai-like');
 
 let chai = require('chai');
@@ -28,7 +28,7 @@ describe('index', () => {
   it('should bundle manager exists', (done) => {
     let manager = index.factory.createManager(platform);
     should.exist(manager);
-    //expect(5).to.be.equal(5);
+    // expect(5).to.be.equal(5);
     done();
   });
 
