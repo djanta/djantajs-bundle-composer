@@ -30,30 +30,35 @@
   "bugs": {
     "url": "https://github.com/djanta/djantajs-bundle-composer/issues"
   },
+  "snyk": true,
   "publishConfig": {
     "access": "public"
   },
   "scripts": {
     "precompile": "npm run clean",
-    "clean": "rimraf .djanta-rc.json .nyc_output coverage test/reports",
+    "clean": "./node_modules/.bin/rimraf .djanta-rc.json && npm run clean:test && npm run clean:cache",
+    "clean:test": "./node_modules/.bin/rimraf ./test/.nyc_output ./test/.coverage ./test/.eslint ./test/.mochawesome",
+    "clean:cache": "./node_modules/.bin/rimraf ./node_modules/.cache/nyc ./node_modules/.cache/@babel ./node_modules/.cache/babel-register",
     "compile": "echo compiling ...",
-    "build": "npm run precompile && npm run compile",
-    "prepublish": "npm run test && npm run clean && npm run build",
-    "test": "echo '---' #npm run snyk && npm run test:init && npm run lint:eslint && npm run test:nyc",
-    "test:init": "./node_modules/.bin/cross-env NODE_ENV=test && npm run compile && mkdir ./.nyc_output",
-    "test:mocha": "./node_modules/.bin/_mocha --recursive -- test/**/**/*.spec.js",
-    "test:nyc": "./node_modules/.bin/nyc --reporter html --reporter text --require babel-register npm run test:mocha",
-    "lint:eslint": "./node_modules/.bin/eslint --color --ext .js -f html -o ./test/reports/lint-results.html .",
+    "build": "#npm run precompile && npm run compile",
+    "prepublish": "npm run compile && npm run build && npm run test",
+    "test": "npm run test:init && npm run snyk:test && npm run test:nyc && npm run lint:eslint",
+    "test:init": "./node_modules/.bin/cross-env NODE_ENV=test && npm run compile",
+    "test:mocha": "./node_modules/.bin/_mocha --recursive --reporter text --reporter mochawesome --reporter-options reportDir=./test/.mochawesome -- test/**/**/*.spec.js",
+    "test:nyc": "./node_modules/.bin/nyc --all --clean -- npm run test:mocha",
+    "lint:eslint": "./node_modules/.bin/eslint --color --ext .js -f html -o ./test/.eslint/lint-results.html .",
     "coverage": "npm run coverage:coveralls && npm run coverage:codeclimate",
-    "coverage:codeclimate": "./node_modules/.bin/nyc report --reporter=lcov | ./node_modules/.bin/codeclimate-test-reporter < ./coverage/lcov.info",
+    "coverage:codeclimate": "./node_modules/.bin/nyc report --reporter=lcov | ./node_modules/.bin/codeclimate-test-reporter < ./test/.coverage/lcov.info",
     "coverage:coveralls": "./node_modules/.bin/nyc report --reporter=text-lcov | ./node_modules/coveralls/bin/coveralls.js",
-    "snyk": "./node_modules/.bin/snyk test --file=./package.json",
+    "prepare": "#npm run snyk:protect",
+    "snyk:test": "./node_modules/.bin/snyk test --file=./package.json",
     "snyk:publish": "./node_modules/.bin/snyk wizard --file=./package.json",
     "snyk:monitor": "./node_modules/.bin/snyk monitor --file=./package.json",
-    "snyk:login": "./node_modules/.bin/snyk auth"
+    "snyk:login": "./node_modules/.bin/snyk auth",
+    "snyk:protect": "./node_modules/.bin/snyk protect"
   },
   "bin": {
-    "djantajs-compose": "./bin/cli.js"
+    "djantajs-bundle": "./bin/cli.js"
   },
   "main": "index.js",
   "dependencies": {
@@ -63,7 +68,9 @@
     "chalk": "^2.4.1",
     "command-line-args": "^5.0.2",
     "command-line-usage": "^5.0.5",
-    "inquirer": "^6.2.0"
+    "inquirer": "^6.2.0",
+    "snyk": "^1.82.1",
+    "inquirer-autocomplete-prompt": "^1.0.1"
   },
   "devDependencies": {
     "mocha": "^5.2.0",
@@ -76,23 +83,13 @@
     "eslint": "^4.19.1",
     "coveralls": "^3.0.1",
     "codeclimate-test-reporter": "^0.5.0",
-    "snyk": "^1.82.1",
     "nyc": "^12.0.2",
     "cross-env": "^5.2.0",
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.6",
-    "babel-loader": "^7.1.5",
     "babel-plugin-istanbul": "^4.1.6",
-    "babel-plugin-lodash": "^3.3.4",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-transform-regenerator": "^6.26.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-node": "^5.1.1",
-    "babel-preset-es2017-node7": "^0.5.2",
-    "babel-preset-stage-2": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
-    "babel-runtime": "^6.26.0"
+    "inquirer-test": "^2.0.1",
+    "@babel/cli": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "@babel/core": "^7.0.0"
   }
 }

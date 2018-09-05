@@ -2,11 +2,7 @@ node_modules
 djantajs_*.log
 test/report
 reports
-coverage/
-mochawesome/
+.mochawesome
 .nyc_output
-alternative
-alternative-tmp
-coverage
-xarg/xarg2.js
-test/reports
+.coverage
+.eslint

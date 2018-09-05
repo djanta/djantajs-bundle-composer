@@ -14,6 +14,12 @@ let CliArgv = require('./xarg/argv');
 let CliCommad = require('./xarg/xarg');
 let CliBlock = require('./xarg/block');
 
+let cloader = require;
+
+// Create the module internal command registry
+module.registry = () => {};
+
+// default qualified constants ...
 let defaults = {
   registry: {
     group: [
@@ -116,8 +122,11 @@ let xcommander = () => {
       return origin;
     },
     run: (argv = process.argv) => {
-      let config = _.defaults({}, defaults.config);
-      let xarg = commandLineArgs(config, { stopAtFirstUnknown: true, argv });
+      argv = argv || process.argv;
+      let xarg = commandLineArgs(_.defaults({}, defaults.config), {
+        stopAtFirstUnknown: true,
+        argv
+      });
 
       // execute the main commander ...
       defaults.main.execute(xarg._unknown || [], xarg.command || xarg.help,
@@ -136,5 +145,9 @@ module.exports = {
     createManager: (p, vm = new Versioning()) => new ProjectManager(p, vm)
   },
   xarg: xcommander(),
-  Platform: Platform
+  Platform: Platform,
+  inquirer: {
+    get prompt () { return cloader('inquirer'); },
+    get autocompletion () { return void undefined; }
+  }
 };

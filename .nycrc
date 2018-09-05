@@ -1,29 +1,28 @@
 {
-  "description": "Nyc based default coverage configuration",
-  "nyc": {
-    "check-coverage": true,
-    "per-file": true,
-    "lines": 99,
-    "statements": 99,
-    "functions": 99,
-    "branches": 99,
-    "watermarks": {
-      "lines": [80, 95],
-      "functions": [80, 95],
-      "branches": [80, 95],
-      "statements": [80, 95]
-    },
-    "include": [ "bin/**/*.js", "lib/**/*.js", "xarg/**/*.js" ],
-    "exclude": [
-      "**/*.spec.js",
-      "**/node_modules/**"
-    ],
-    "reporter": [ "html", "text", "lcov", "text-summary", "clover", "mochawesome" ],
-    "extension": [ ".js", ".jsx" ],
-    "require": [ "babel-register" ],
-    "cache": true,
-    "all": true,
-    "sourceMap": false,
-    "instrument": false
-  }
+  "check-coverage": false,
+  "per-file": true,
+  "lines": 99,
+  "functions": 99,
+  "branches": 99,
+  "statements": 99,
+  "watermarks": {
+    "lines": [80, 95],
+    "functions": [80, 95],
+    "branches": [80, 95],
+    "statements": [80, 95]
+  },
+  "reporter": [
+    "html",
+    "text",
+    "lcov",
+    "text-summary"
+  ],
+  "extension": [
+    ".js"
+  ],
+  "cache": true,
+  "all": true,
+  "show-process-tree": true,
+  "temp-directory": "./test/.nyc_output",
+  "report-dir": "./test/.coverage"
 }

@@ -13,7 +13,7 @@ before_install:
   - bash ~/travis-npm-deploy/deploy.sh --git-config
 install:
   - bash ~/travis-npm-deploy/deploy.sh --install
-  - npm i --verbose
+  - npm i --silent
   - 'echo "repo_token: $COVERALLS_REPO_TOKEN" > "./.coveralls.yml"'
   - npm run snyk:login -- $SNYK_TOKEN
 script:
