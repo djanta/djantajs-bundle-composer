@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "mocha": "^5.2.0",
-    "mochawesome": "^3.0.2",
+    "mochawesome": "^3.1.2",
     "rimraf": "^2.6.2",
     "chai": "^4.1.2",
     "chai-json-equal": "^0.0.1",
